@@ -1,2 +1,4 @@
-package dpd.lab.voting;public class PreferentialElectionProcessor {
+package dpd.lab.voting;
+
+public class PreferentialElectionProcessor {
 }
