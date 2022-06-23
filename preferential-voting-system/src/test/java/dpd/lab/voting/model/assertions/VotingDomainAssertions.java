@@ -1,6 +1,7 @@
 package dpd.lab.voting.model.assertions;
 
 import dpd.lab.voting.model.Ballot;
+import dpd.lab.voting.model.ElectionResult;
 import dpd.lab.voting.model.Preference;
 
 public class VotingDomainAssertions {
@@ -11,5 +12,9 @@ public class VotingDomainAssertions {
 
     public static BallotAssert assertThat(Ballot ballot) {
         return new BallotAssert(ballot);
+    }
+
+    public static ElectionResultAssert assertThat(ElectionResult electionResult) {
+        return new ElectionResultAssert(electionResult);
     }
 }

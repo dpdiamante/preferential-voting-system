@@ -78,6 +78,21 @@ public class BallotTest {
     }
 
     @Test
+    public void shouldRemoveCandidateFromBallot() {
+        Ballot myBallot = new Ballot().vote(BARACK_OBAMA).withPreference(1)
+                .vote(LENI_ROBREDO).withPreference(2)
+                .vote(ANTHONY_ALBANESE).withPreference(3);
+
+        myBallot.remove(ANTHONY_ALBANESE);
+
+        assertThat(myBallot).hasTotalVotes(2)
+                .hasPreferenceVotes(
+                        new Preference(LENI_ROBREDO, PriorityPreference.of(2)),
+                        new Preference(BARACK_OBAMA, PriorityPreference.of(1))
+                );
+    }
+
+    @Test
     public void shouldNotAddVoteForTakenPriority() {
         assertThatThrownBy(() ->
             new Ballot().vote(BARACK_OBAMA).withPreference(1).vote(LENI_ROBREDO).withPreference(1)

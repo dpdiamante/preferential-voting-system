@@ -64,6 +64,12 @@ public class Ballot {
         return votes.stream().map(Preference::getPriorityPreference).anyMatch(priority::equals);
     }
 
+    public Ballot remove(Candidate candidate) {
+        votes.removeIf(preference -> preference.getCandidate().equals(candidate));
+
+        return this;
+    }
+
     private void addPreference(Preference preference) {
 
         if (ballotContains(preference.getCandidate())) {
