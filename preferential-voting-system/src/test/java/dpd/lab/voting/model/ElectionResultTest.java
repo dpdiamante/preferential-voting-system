@@ -24,32 +24,35 @@ public class ElectionResultTest {
 
     @Test
     public void shouldKeepElectionResultStillValid() {
-        ElectionResult electionResult = new ElectionResult(Votes.instanceOf(100))
-                .registerVotesFor(LENI_ROBREDO).with(Votes.instanceOf(30))
-                .registerVotesFor(BARACK_OBAMA).with(Votes.instanceOf(20))
-                .registerVotesFor(ANTHONY_ALBANESE).with(Votes.instanceOf(20));
+        ElectionResult electionResult = new ElectionResult(Votes.valueOf(100))
+                .registerVotesFor(LENI_ROBREDO).with(Votes.valueOf(30))
+                .registerVotesFor(BARACK_OBAMA).with(Votes.valueOf(20))
+                .registerVotesFor(ANTHONY_ALBANESE).with(Votes.valueOf(20));
 
-        assertThat(electionResult).isNotNull();
+        assertThat(electionResult).isNotNull()
+                .withVotes(LENI_ROBREDO, Votes.valueOf(30))
+                .withVotes(BARACK_OBAMA, Votes.valueOf(20))
+                .withVotes(ANTHONY_ALBANESE, Votes.valueOf(20));
     }
 
     @Test
     public void shouldThrowExceptionWhenCountingVotesExceedTotalVotes() {
         assertThatThrownBy(() -> {
-            new ElectionResult(Votes.instanceOf(100))
-                    .registerVotesFor(LENI_ROBREDO).with(Votes.instanceOf(30))
-                    .registerVotesFor(BARACK_OBAMA).with(Votes.instanceOf(20))
-                    .registerVotesFor(ANTHONY_ALBANESE).with(Votes.instanceOf(70));
+            new ElectionResult(Votes.valueOf(100))
+                    .registerVotesFor(LENI_ROBREDO).with(Votes.valueOf(30))
+                    .registerVotesFor(BARACK_OBAMA).with(Votes.valueOf(20))
+                    .registerVotesFor(ANTHONY_ALBANESE).with(Votes.valueOf(70));
         }).isInstanceOf(TotalVotesExceededException.class)
         .hasMessage("Total counted votes 120 has exceeded total registered votes 100");
     }
 
     @Test
     public void shouldHaveWinnerIfSomeoneGotMajority() {
-        ElectionResult electionResult = new ElectionResult(Votes.instanceOf(100))
-                .registerVotesFor(LENI_ROBREDO).with(Votes.instanceOf(60))
-                .registerVotesFor(BARACK_OBAMA).with(Votes.instanceOf(20))
-                .registerVotesFor(ANTHONY_ALBANESE).with(Votes.instanceOf(20));
+        ElectionResult electionResult = new ElectionResult(Votes.valueOf(100))
+                .registerVotesFor(LENI_ROBREDO).with(Votes.valueOf(60))
+                .registerVotesFor(BARACK_OBAMA).with(Votes.valueOf(20))
+                .registerVotesFor(ANTHONY_ALBANESE).with(Votes.valueOf(20));
 
-        assertThat(electionResult).winnerIs(LENI_ROBREDO);
+        assertThat(electionResult).winnerIs(LENI_ROBREDO).hasWinningVotes(Votes.valueOf(60));
     }
 }

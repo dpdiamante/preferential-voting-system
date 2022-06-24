@@ -42,7 +42,7 @@ public class ElectionResult {
                 .max(Comparator.naturalOrder()).orElse(0);
 
         if (highestVote >= totalVotes.getValue() / 2) {
-            return Optional.of(Votes.instanceOf(highestVote));
+            return Optional.of(Votes.valueOf(highestVote));
         } else {
             return Optional.empty();
         }
@@ -59,6 +59,10 @@ public class ElectionResult {
                 .filter(candidateVotesEntry -> candidateVotesEntry.getValue().equals(winningVotes.get()))
                 .findFirst()
                 .map(Map.Entry::getKey);
+    }
+
+    public Optional<Votes> getVotesFor(Candidate candidate) {
+        return Optional.ofNullable(votePortions.get(candidate));
     }
 
     public static class ElectionResultCandidateRegister {
