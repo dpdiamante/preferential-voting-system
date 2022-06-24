@@ -33,6 +33,7 @@ public class PreferentialElectionProcessor {
                             ballot.getActiveVote().isPresent() && ballot.getActiveVote().get().equals(toBeRemoved)
                     ).collect(Collectors.toList());
                 ballotsToProcess.forEach(Ballot::movePriority);
+                electionResult.registerVotesFor(toBeRemoved).with(Votes.valueOf(0));
             }
 
             runRound(electionResult, ballotsToProcess);

@@ -85,6 +85,7 @@ public class PreferentialElectionProcessorTest {
         ElectionResult result = electionProcessor.processBallots(ballots, batmanCandidates);
 
         assertThat(result).hasTotalVotes(Votes.valueOf(8));
+        System.out.println(new Gson().toJson(result));
     }
 
     private List<Ballot> ballotListWithFirstRoundWin() {
