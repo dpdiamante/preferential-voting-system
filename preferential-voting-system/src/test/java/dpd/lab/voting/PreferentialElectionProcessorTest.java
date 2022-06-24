@@ -1,5 +1,6 @@
 package dpd.lab.voting;
 
+import com.google.gson.Gson;
 import dpd.lab.voting.model.Ballot;
 import dpd.lab.voting.model.Candidate;
 import dpd.lab.voting.model.ElectionResult;
@@ -70,10 +71,11 @@ public class PreferentialElectionProcessorTest {
     }
 
     @Test
-    public void shouldHaveCorrectNumberOfTotalVotes() {
+    public void shouldHaveCorrectNumberOfTotalVotesAndWinner() {
         ElectionResult result = electionProcessor.processBallots(ballotListWithFirstRoundWin(), batmanCandidates);
 
-        assertThat(result).hasTotalVotes(Votes.valueOf(9));
+        assertThat(result).hasTotalVotes(Votes.valueOf(9)).winnerIs(christianBale);
+        System.out.println(new Gson().toJson(result));
     }
 
     @Test

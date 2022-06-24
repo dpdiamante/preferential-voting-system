@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dpd.lab.voting.PreferentialElectionProcessorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-06-24T15:23:52" hostname="MAC-DDIAMANTE.local" time="0.047">
+<testsuite name="dpd.lab.voting.PreferentialElectionProcessorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-24T16:44:03" hostname="MAC-DDIAMANTE.local" time="0.079">
   <properties/>
-  <testcase name="shouldHaveCorrectNumberOfTotalVotes()" classname="dpd.lab.voting.PreferentialElectionProcessorTest" time="0.044"/>
-  <testcase name="shouldHaveCorrectNumberOfTotalVotesWhenSomeBallotsAreInvalid()" classname="dpd.lab.voting.PreferentialElectionProcessorTest" time="0.003"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="shouldHaveCorrectNumberOfTotalVotesAndWinner()" classname="dpd.lab.voting.PreferentialElectionProcessorTest" time="0.079"/>
+  <system-out><![CDATA[{"electionRounds":{"value":1},"totalVotes":{"value":9},"votePortions":{"Christian Bale":{"value":5},"Michael Keaton":{"value":1},"Robert Pattinson":{"value":2},"Ben Affleck":{"value":1}}}
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

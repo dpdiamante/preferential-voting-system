@@ -6,7 +6,7 @@ public class ElectionRounds extends TinyType<Integer> {
         super(value);
     }
 
-    public static ElectionRounds instanceFrom(int value) {
+    public static ElectionRounds valueOf(int value) {
         return new ElectionRounds(value);
     }
 }

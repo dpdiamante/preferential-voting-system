@@ -9,39 +9,54 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ElectionResultTest {
 
-    private static Candidate LENI_ROBREDO;
+    private static Candidate leniRobredo;
 
-    private static Candidate BARACK_OBAMA;
+    private static Candidate barackObama;
 
-    private static Candidate ANTHONY_ALBANESE;
+    private static Candidate anthonyAlbanese;
 
     @BeforeAll
     public static void setUp() {
-        LENI_ROBREDO = new Candidate("Leni Robredo");
-        BARACK_OBAMA = new Candidate("Barack Obama");
-        ANTHONY_ALBANESE = new Candidate("Anthony Albanese");
+        leniRobredo = new Candidate("Leni Robredo");
+        barackObama = new Candidate("Barack Obama");
+        anthonyAlbanese = new Candidate("Anthony Albanese");
     }
 
     @Test
     public void shouldKeepElectionResultStillValid() {
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(100))
-                .registerVotesFor(LENI_ROBREDO).with(Votes.valueOf(30))
-                .registerVotesFor(BARACK_OBAMA).with(Votes.valueOf(20))
-                .registerVotesFor(ANTHONY_ALBANESE).with(Votes.valueOf(20));
+                .registerVotesFor(leniRobredo).with(Votes.valueOf(30))
+                .registerVotesFor(barackObama).with(Votes.valueOf(20))
+                .registerVotesFor(anthonyAlbanese).with(Votes.valueOf(20));
 
         assertThat(electionResult).isNotNull()
-                .withVotes(LENI_ROBREDO, Votes.valueOf(30))
-                .withVotes(BARACK_OBAMA, Votes.valueOf(20))
-                .withVotes(ANTHONY_ALBANESE, Votes.valueOf(20));
+                .withVotes(leniRobredo, Votes.valueOf(30))
+                .withVotes(barackObama, Votes.valueOf(20))
+                .withVotes(anthonyAlbanese, Votes.valueOf(20));
+    }
+
+    @Test
+    public void shouldProperlyIncrementVotes() {
+        ElectionResult electionResult = new ElectionResult(Votes.valueOf(100))
+                .registerVotesFor(leniRobredo).with(Votes.valueOf(30))
+                .registerVotesFor(barackObama).with(Votes.valueOf(20))
+                .registerVotesFor(anthonyAlbanese).with(Votes.valueOf(20));
+
+        electionResult.addVoteFor(leniRobredo);
+
+        assertThat(electionResult).isNotNull()
+                .withVotes(leniRobredo, Votes.valueOf(31))
+                .withVotes(barackObama, Votes.valueOf(20))
+                .withVotes(anthonyAlbanese, Votes.valueOf(20));
     }
 
     @Test
     public void shouldThrowExceptionWhenCountingVotesExceedTotalVotes() {
         assertThatThrownBy(() -> {
             new ElectionResult(Votes.valueOf(100))
-                    .registerVotesFor(LENI_ROBREDO).with(Votes.valueOf(30))
-                    .registerVotesFor(BARACK_OBAMA).with(Votes.valueOf(20))
-                    .registerVotesFor(ANTHONY_ALBANESE).with(Votes.valueOf(70));
+                    .registerVotesFor(leniRobredo).with(Votes.valueOf(30))
+                    .registerVotesFor(barackObama).with(Votes.valueOf(20))
+                    .registerVotesFor(anthonyAlbanese).with(Votes.valueOf(70));
         }).isInstanceOf(TotalVotesExceededException.class)
         .hasMessage("Total counted votes 120 has exceeded total registered votes 100");
     }
@@ -49,10 +64,10 @@ public class ElectionResultTest {
     @Test
     public void shouldHaveWinnerIfSomeoneGotMajority() {
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(100))
-                .registerVotesFor(LENI_ROBREDO).with(Votes.valueOf(60))
-                .registerVotesFor(BARACK_OBAMA).with(Votes.valueOf(20))
-                .registerVotesFor(ANTHONY_ALBANESE).with(Votes.valueOf(20));
+                .registerVotesFor(leniRobredo).with(Votes.valueOf(60))
+                .registerVotesFor(barackObama).with(Votes.valueOf(20))
+                .registerVotesFor(anthonyAlbanese).with(Votes.valueOf(20));
 
-        assertThat(electionResult).winnerIs(LENI_ROBREDO).hasWinningVotes(Votes.valueOf(60));
+        assertThat(electionResult).winnerIs(leniRobredo).hasWinningVotes(Votes.valueOf(60));
     }
 }

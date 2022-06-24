@@ -4,9 +4,9 @@ import dpd.lab.voting.exceptions.CandidateInBallotException;
 import dpd.lab.voting.exceptions.CandidateNotInBallotException;
 import dpd.lab.voting.exceptions.PreferencePriorityTakenException;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -89,6 +89,11 @@ public class Ballot {
                 .forEach(this::addPreference);
 
         return this;
+    }
+
+    public Optional<Candidate> withPreference(PriorityPreference priorityPreference) {
+        return votes.stream().filter(preference -> preference.getPriorityPreference().equals(priorityPreference))
+                .map(Preference::getCandidate).findFirst();
     }
 
     public static class PreferenceBuilder {

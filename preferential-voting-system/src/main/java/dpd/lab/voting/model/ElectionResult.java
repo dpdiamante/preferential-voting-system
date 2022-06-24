@@ -24,6 +24,11 @@ public class ElectionResult {
         return new ElectionResultCandidateRegister(this, candidate);
     }
 
+    public ElectionResult addVoteFor(Candidate candidate) {
+        return new ElectionResultCandidateRegister(this, candidate)
+            .with(votePortions.getOrDefault(candidate, Votes.valueOf(0)).increment());
+    }
+
     public void setElectionRounds(ElectionRounds rounds) {
         this.electionRounds = rounds;
     }

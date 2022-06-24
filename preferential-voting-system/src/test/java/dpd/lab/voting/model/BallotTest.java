@@ -33,6 +33,15 @@ public class BallotTest {
     }
 
     @Test
+    public void shouldFindCandidateWithPreference() {
+        Ballot myBallot = new Ballot().vote(barackObama).withPreference(1)
+                .vote(leniRobredo).withPreference(2);
+
+        assertThat(myBallot.withPreference(PriorityPreference.of(2)).isPresent()).isTrue();
+        assertThat(myBallot.withPreference(PriorityPreference.of(2)).get()).isEqualTo(leniRobredo);
+    }
+
+    @Test
     public void shouldBuildBallotWithMultipleCandidates() {
         Ballot myBallot = new Ballot().vote(barackObama).withPreference(1)
                 .vote(leniRobredo).withPreference(2);

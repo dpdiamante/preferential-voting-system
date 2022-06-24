@@ -14,7 +14,7 @@ public class ElectionResultAssert extends AbstractAssert<ElectionResultAssert, E
     }
 
     public ElectionResultAssert winnerIs(Candidate candidate) {
-        assertThat(actual.getWinner().isPresent()).isTrue();
+        assertThat(actual.getWinner().isPresent()).as("There is no election winner").isTrue();
         assertThat(actual.getWinner().get()).isEqualTo(candidate);
 
         return myself;

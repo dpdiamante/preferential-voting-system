@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dpd.lab.voting.model.ElectionResultTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-06-24T15:23:52" hostname="MAC-DDIAMANTE.local" time="0.007">
-  <properties/>
-  <testcase name="shouldThrowExceptionWhenCountingVotesExceedTotalVotes()" classname="dpd.lab.voting.model.ElectionResultTest" time="0.003"/>
-  <testcase name="shouldKeepElectionResultStillValid()" classname="dpd.lab.voting.model.ElectionResultTest" time="0.001"/>
-  <testcase name="shouldHaveWinnerIfSomeoneGotMajority()" classname="dpd.lab.voting.model.ElectionResultTest" time="0.002"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
