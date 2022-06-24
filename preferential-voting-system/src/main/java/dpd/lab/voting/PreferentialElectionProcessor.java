@@ -22,12 +22,20 @@ public class PreferentialElectionProcessor {
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(ballots.size()));
         Queue<Candidate> losersList = new LinkedList<>();
 
+        List<Ballot> ballotsToProcess = ballots;
+
         for (int i = 0; i < candidates.size(); i++) {
             if (!losersList.isEmpty()) {
                 Candidate toBeRemoved = losersList.element();
+
+                ballotsToProcess = ballots.stream()
+                    .filter(ballot ->
+                            ballot.getActiveVote().isPresent() && ballot.getActiveVote().get().equals(toBeRemoved)
+                    ).collect(Collectors.toList());
+                ballotsToProcess.forEach(Ballot::movePriority);
             }
 
-            runRound(electionResult, ballots, i + 1);
+            runRound(electionResult, ballotsToProcess);
 
             if (electionResult.getWinner().isPresent()) {
                 break;
@@ -39,9 +47,9 @@ public class PreferentialElectionProcessor {
         return electionResult;
     }
 
-    private void runRound(ElectionResult result, List<Ballot> ballots, int round) {
+    private void runRound(ElectionResult result, List<Ballot> ballots) {
         ballots.forEach(ballot -> {
-            Candidate candidate = ballot.withPreference(PriorityPreference.of(round))
+            Candidate candidate = ballot.getActiveVote()
                 .orElseThrow(() -> new VotingException("A ballot seems to be invalid"));
 
             result.addVoteFor(candidate);
