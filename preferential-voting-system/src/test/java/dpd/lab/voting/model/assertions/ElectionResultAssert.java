@@ -33,4 +33,10 @@ public class ElectionResultAssert extends AbstractAssert<ElectionResultAssert, E
 
         return myself;
     }
+
+    public ElectionResultAssert hasTotalVotes(Votes votes) {
+        assertThat(actual.getTotalVotes()).isEqualTo(votes);
+
+        return myself;
+    }
 }

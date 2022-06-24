@@ -41,7 +41,7 @@ public class ElectionResult {
                 .map(Votes::getValue)
                 .max(Comparator.naturalOrder()).orElse(0);
 
-        if (highestVote >= totalVotes.getValue() / 2) {
+        if (highestVote > totalVotes.getValue() / 2) {
             return Optional.of(Votes.valueOf(highestVote));
         } else {
             return Optional.empty();
