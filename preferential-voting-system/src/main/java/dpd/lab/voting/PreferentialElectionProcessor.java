@@ -11,14 +11,14 @@ import java.util.Set;
 public class PreferentialElectionProcessor {
 
     public ElectionResult processBallots(List<Ballot> ballots, Set<Candidate> candidates) {
-        ballots.removeIf(ballot -> !validBallot(ballot, candidates));
+        ballots.removeIf(ballot -> invalidBallot(ballot, candidates));
 
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(ballots.size()));
 
         return electionResult;
     }
 
-    private boolean validBallot(Ballot ballot, Set<Candidate> candidates) {
+    private boolean invalidBallot(Ballot ballot, Set<Candidate> candidates) {
         return candidates.stream().anyMatch(candidate -> !ballot.ballotContains(candidate));
     }
 }

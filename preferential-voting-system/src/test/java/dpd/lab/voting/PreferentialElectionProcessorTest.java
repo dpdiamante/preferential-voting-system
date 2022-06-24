@@ -76,6 +76,15 @@ public class PreferentialElectionProcessorTest {
         assertThat(result).hasTotalVotes(Votes.valueOf(9));
     }
 
+    @Test
+    public void shouldHaveCorrectNumberOfTotalVotesWhenSomeBallotsAreInvalid() {
+        List<Ballot> ballots = ballotListWithFirstRoundWin();
+        ballots.get(3).remove(adamWest);
+        ElectionResult result = electionProcessor.processBallots(ballots, batmanCandidates);
+
+        assertThat(result).hasTotalVotes(Votes.valueOf(8));
+    }
+
     private List<Ballot> ballotListWithFirstRoundWin() {
         Ballot firstAnonymousBallot = new Ballot().voteInOrder(
             christianBale, robertPattinson, michaelKeaton, benAffleck, valKilmer, legoBatman, georgeClooney, adamWest
