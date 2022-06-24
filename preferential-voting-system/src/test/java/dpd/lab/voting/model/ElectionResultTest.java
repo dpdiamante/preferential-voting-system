@@ -32,7 +32,8 @@ public class ElectionResultTest {
         assertThat(electionResult).isNotNull()
                 .withVotes(leniRobredo, Votes.valueOf(30))
                 .withVotes(barackObama, Votes.valueOf(20))
-                .withVotes(anthonyAlbanese, Votes.valueOf(20));
+                .withVotes(anthonyAlbanese, Votes.valueOf(20))
+                .hasLosers(barackObama, anthonyAlbanese);
     }
 
     @Test

@@ -5,6 +5,9 @@ import dpd.lab.voting.model.ElectionResult;
 import dpd.lab.voting.model.Votes;
 import org.assertj.core.api.AbstractAssert;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ElectionResultAssert extends AbstractAssert<ElectionResultAssert, ElectionResult>  {
@@ -16,6 +19,12 @@ public class ElectionResultAssert extends AbstractAssert<ElectionResultAssert, E
     public ElectionResultAssert winnerIs(Candidate candidate) {
         assertThat(actual.getWinner().isPresent()).as("There is no election winner").isTrue();
         assertThat(actual.getWinner().get()).isEqualTo(candidate);
+
+        return myself;
+    }
+
+    public ElectionResultAssert hasLosers(Candidate... candidates) {
+        assertThat(actual.getLowestVotes()).isEqualTo(new HashSet<>(Arrays.asList(candidates)));
 
         return myself;
     }

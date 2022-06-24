@@ -4,8 +4,11 @@ import dpd.lab.voting.exceptions.TotalVotesExceededException;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ElectionResult {
 
@@ -64,6 +67,17 @@ public class ElectionResult {
                 .filter(candidateVotesEntry -> candidateVotesEntry.getValue().equals(winningVotes.get()))
                 .findFirst()
                 .map(Map.Entry::getKey);
+    }
+
+    public Set<Candidate> getLowestVotes() {
+        int lowestVote = votePortions.values().stream()
+                .map(Votes::getValue)
+                .min(Comparator.naturalOrder()).orElse(0);
+
+        return votePortions.entrySet().stream()
+                .filter(candidateVotesEntry -> candidateVotesEntry.getValue().equals(Votes.valueOf(lowestVote)))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
     }
 
     public Optional<Votes> getVotesFor(Candidate candidate) {
