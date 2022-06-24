@@ -21,6 +21,13 @@ public class BallotAssert extends AbstractAssert<BallotAssert, Ballot> {
         return myself;
     }
 
+    public BallotAssert hasActiveVote(Candidate candidate) {
+        assertThat(actual.getActiveVote().isPresent()).isTrue();
+        assertThat(actual.getActiveVote().get()).isEqualTo(candidate);
+
+        return myself;
+    }
+
     public BallotAssert hasCandidate(Candidate candidate) {
         assertThat(actual.ballotContains(candidate)).isTrue();
 

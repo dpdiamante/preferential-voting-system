@@ -1,6 +1,7 @@
 package dpd.lab.voting.model;
 
 import dpd.lab.voting.exceptions.TotalVotesExceededException;
+import dpd.lab.voting.exceptions.VotingException;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -72,7 +73,9 @@ public class ElectionResult {
     public Set<Candidate> getLowestVotes() {
         int lowestVote = votePortions.values().stream()
                 .map(Votes::getValue)
-                .min(Comparator.naturalOrder()).orElse(0);
+                .filter(votes -> votes > 0)
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() -> new VotingException("Something went wrong with retrieving lowest votes"));
 
         return votePortions.entrySet().stream()
                 .filter(candidateVotesEntry -> candidateVotesEntry.getValue().equals(Votes.valueOf(lowestVote)))

@@ -9,9 +9,9 @@ import dpd.lab.voting.model.Preference;
 import dpd.lab.voting.model.PriorityPreference;
 import dpd.lab.voting.model.Votes;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,14 +20,20 @@ public class PreferentialElectionProcessor {
     public ElectionResult processBallots(List<Ballot> ballots, Set<Candidate> candidates) {
         ballots.removeIf(ballot -> invalidBallot(ballot, candidates));
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(ballots.size()));
-        Map<Integer, Set<Candidate>> lowestPerRound = new HashMap<>();
+        Queue<Candidate> losersList = new LinkedList<>();
 
         for (int i = 0; i < candidates.size(); i++) {
+            if (!losersList.isEmpty()) {
+                Candidate toBeRemoved = losersList.element();
+            }
+
             runRound(electionResult, ballots, i + 1);
 
             if (electionResult.getWinner().isPresent()) {
                 break;
             }
+
+            losersList.addAll(electionResult.getLowestVotes());
         }
 
         return electionResult;
@@ -39,7 +45,6 @@ public class PreferentialElectionProcessor {
                 .orElseThrow(() -> new VotingException("A ballot seems to be invalid"));
 
             result.addVoteFor(candidate);
-            result.setElectionRounds(ElectionRounds.valueOf(round));
         });
     }
 

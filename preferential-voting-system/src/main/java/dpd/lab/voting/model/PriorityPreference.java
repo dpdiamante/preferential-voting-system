@@ -6,6 +6,10 @@ public class PriorityPreference extends TinyType<Integer> {
         super(priority);
     }
 
+    public PriorityPreference increment() {
+        return new PriorityPreference(this.getValue() + 1);
+    }
+
     public static PriorityPreference of(int priority) {
         return new PriorityPreference(priority);
     }

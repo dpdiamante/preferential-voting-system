@@ -12,14 +12,30 @@ import java.util.stream.IntStream;
 
 public class Ballot {
 
+    private PriorityPreference activePriority;
+
     private Set<Preference> votes;
 
     public Ballot() {
         votes = new HashSet<>();
+        activePriority = PriorityPreference.of(1);
     }
 
     public Set<Preference> getVotes() {
         return Collections.unmodifiableSet(votes);
+    }
+
+    public void movePriority() {
+        activePriority = activePriority.increment();
+    }
+
+    public PriorityPreference getActivePriority() {
+        return activePriority;
+    }
+
+    public Optional<Candidate> getActiveVote() {
+        return votes.stream().filter(preference -> preference.getPriorityPreference().equals(activePriority))
+                .map(Preference::getCandidate).findFirst();
     }
 
     public Ballot swapPreferences(Candidate candidate, Candidate otherCandidate) {
