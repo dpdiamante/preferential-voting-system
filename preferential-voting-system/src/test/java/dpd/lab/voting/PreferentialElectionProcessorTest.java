@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import dpd.lab.voting.model.Ballot;
 import dpd.lab.voting.model.Candidate;
 import dpd.lab.voting.model.ElectionResult;
-import dpd.lab.voting.model.PriorityPreference;
 import dpd.lab.voting.model.Votes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,16 +24,19 @@ public class PreferentialElectionProcessorTest {
     private static Candidate ABRAHAM_LINCOLN;
     private static Candidate GEORGE_WASHINGTON;
 
-    private static Candidate LENI_ROBREDO;
-    private static Candidate RAMON_MAGSAYSAY;
-    private static Candidate MANUEL_QUEZON;
-    private static Candidate CORY_AQUINO;
-    private static Candidate FIDEL_RAMOS;
+    private static Candidate leniRobredo;
+    private static Candidate ramonMagsaysay;
+    private static Candidate manuelQuezon;
+    private static Candidate coryAquino;
+    private static Candidate fidelRamos;
+    private static Set<Candidate> philippinePresidentialCandidates;
 
-    private static Candidate JOHN_WICK;
-    private static Candidate JACK_REACHER;
-    private static Candidate JOHN_MCCLANE;
-    private static Candidate VINCENT;
+    private static Candidate johnWick;
+    private static Candidate jackReacher;
+    private static Candidate johnMcClane;
+    private static Candidate vincent;
+    private static Candidate hutchMansell;
+    private static Set<Candidate> assassinCandidates;
 
     private static Candidate michaelKeaton;
     private static Candidate valKilmer;
@@ -63,6 +65,30 @@ public class PreferentialElectionProcessorTest {
         batmanCandidates = new HashSet<>(Arrays.asList(
             michaelKeaton, valKilmer, adamWest, christianBale, robertPattinson, benAffleck, legoBatman, georgeClooney
         ));
+
+        johnWick = new Candidate("John Wick");
+        jackReacher = new Candidate("Jack Reacher");
+        johnMcClane = new Candidate("John McClane");
+        vincent = new Candidate("Vincent");
+        hutchMansell = new Candidate("Hutch Mansell");
+        assassinCandidates = new HashSet<>(Arrays.asList(
+            johnWick, jackReacher, johnMcClane, vincent
+        ));
+
+        /*private static Candidate leniRobredo;
+        private static Candidate ramonMagsaysay;
+        private static Candidate manuelQuezon;
+        private static Candidate coryAquino;
+        private static Candidate fidelRamos;
+        private static List<Candidate> philippinePresidentialCandidates;*/
+        leniRobredo = new Candidate("Leni Robredo");
+        ramonMagsaysay = new Candidate("Ramon Magsaysay");
+        manuelQuezon = new Candidate("Manuel Quezon");
+        coryAquino = new Candidate("Cory Aquino");
+        fidelRamos = new Candidate("Fidel Ramos");
+        philippinePresidentialCandidates = new HashSet<>(Arrays.asList(
+            leniRobredo, ramonMagsaysay, manuelQuezon, coryAquino, fidelRamos
+        ));
     }
 
     @BeforeEach
@@ -86,6 +112,24 @@ public class PreferentialElectionProcessorTest {
 
         assertThat(result).hasTotalVotes(Votes.valueOf(8));
         System.out.println(new Gson().toJson(result));
+    }
+
+    private List<Ballot> ballotListWithSecondRoundWin() {
+        return new ArrayList<>(List.of(
+            new Ballot().voteInOrder(johnWick, hutchMansell, jackReacher, vincent, johnMcClane),
+            new Ballot().voteInOrder(johnWick, vincent, hutchMansell, johnMcClane, jackReacher),
+            new Ballot().voteInOrder(johnWick, jackReacher, vincent, hutchMansell, johnMcClane),
+            new Ballot().voteInOrder(johnWick, jackReacher, vincent, hutchMansell, johnMcClane),
+            new Ballot().voteInOrder(jackReacher, hutchMansell, johnWick, vincent, johnMcClane),
+            new Ballot().voteInOrder(jackReacher, johnWick, hutchMansell, vincent, johnMcClane),
+            new Ballot().voteInOrder(hutchMansell, johnWick, jackReacher, vincent, johnMcClane),
+            new Ballot().voteInOrder(hutchMansell, jackReacher, johnWick, vincent, johnMcClane),
+            new Ballot().voteInOrder(hutchMansell, johnWick, jackReacher, vincent, johnMcClane)
+        ));
+    }
+
+    private List<Ballot> ballotListWithLowestTieOnFirstRound() {
+        return null;
     }
 
     private List<Ballot> ballotListWithFirstRoundWin() {

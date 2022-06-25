@@ -20,13 +20,13 @@ public class PreferentialElectionProcessor {
     public ElectionResult processBallots(List<Ballot> ballots, Set<Candidate> candidates) {
         ballots.removeIf(ballot -> invalidBallot(ballot, candidates));
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(ballots.size()));
-        Queue<Candidate> losersList = new LinkedList<>();
+        Queue<Candidate> losersQueue = new LinkedList<>();
 
         List<Ballot> ballotsToProcess = ballots;
 
         for (int i = 0; i < candidates.size(); i++) {
-            if (!losersList.isEmpty()) {
-                Candidate toBeRemoved = losersList.element();
+            if (!losersQueue.isEmpty()) {
+                Candidate toBeRemoved = losersQueue.element();
 
                 ballotsToProcess = ballots.stream()
                     .filter(ballot ->
@@ -42,7 +42,9 @@ public class PreferentialElectionProcessor {
                 break;
             }
 
-            losersList.addAll(electionResult.getLowestVotes());
+            electionResult.getLowestVotes().stream()
+                    .filter(losingCandidate -> !losersQueue.contains(losingCandidate))
+                    .forEach(losersQueue::add);
         }
 
         return electionResult;

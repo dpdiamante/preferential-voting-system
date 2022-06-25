@@ -27,6 +27,10 @@ public class Ballot {
 
     public void movePriority() {
         activePriority = activePriority.increment();
+
+        while(withPreference(activePriority).isEmpty()) {
+            activePriority = activePriority.increment();
+        }
     }
 
     public PriorityPreference getActivePriority() {

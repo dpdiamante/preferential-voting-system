@@ -52,6 +52,17 @@ public class BallotTest {
     }
 
     @Test
+    public void shouldReturnCorrectActiveCandidateAfterSomeCandidateRemoval() {
+        Ballot myBallot = new Ballot().vote(barackObama).withPreference(1)
+                .vote(leniRobredo).withPreference(2)
+                .vote(anthonyAlbanese).withPreference(3);
+
+        myBallot.remove(leniRobredo);
+        myBallot.movePriority();
+        assertThat(myBallot).hasActiveVote(anthonyAlbanese);
+    }
+
+    @Test
     public void shouldBuildBallotWithMultipleCandidates() {
         Ballot myBallot = new Ballot().vote(barackObama).withPreference(1)
                 .vote(leniRobredo).withPreference(2);
