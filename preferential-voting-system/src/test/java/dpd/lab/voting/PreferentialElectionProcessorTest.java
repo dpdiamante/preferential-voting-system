@@ -121,6 +121,17 @@ public class PreferentialElectionProcessorTest {
         System.out.println(new Gson().toJson(result));
     }
 
+    @Test
+    public void shouldHaveWinnerInThirdRoundAndLowestTieProcessed() {
+        ElectionResult result =
+                electionProcessor.processBallots(ballotListWithThatSpecialTieCase(), philippinePresidentialCandidates);
+
+        assertThat(result).hasTotalVotes(Votes.valueOf(21))
+                .winnerIs(leniRobredo)
+                .withElectionRounds(ElectionRounds.valueOf(3));
+        System.out.println(new Gson().toJson(result));
+    }
+
     private List<Ballot> ballotListWithSecondRoundWin() {
         return new ArrayList<>(List.of(
             new Ballot().voteInOrder(johnWick, hutchMansell, jackReacher, vincent, johnMcClane),
@@ -135,8 +146,30 @@ public class PreferentialElectionProcessorTest {
         ));
     }
 
-    private List<Ballot> ballotListWithLowestTieOnFirstRound() {
-        return null;
+    private List<Ballot> ballotListWithThatSpecialTieCase() {
+        return new ArrayList<>(List.of(
+                new Ballot().voteInOrder(leniRobredo, coryAquino, ramonMagsaysay, manuelQuezon, fidelRamos),
+                new Ballot().voteInOrder(leniRobredo, ramonMagsaysay, manuelQuezon, coryAquino, fidelRamos),
+                new Ballot().voteInOrder(leniRobredo, ramonMagsaysay, manuelQuezon, fidelRamos, coryAquino),
+                new Ballot().voteInOrder(leniRobredo, manuelQuezon, ramonMagsaysay, coryAquino, fidelRamos),
+                new Ballot().voteInOrder(leniRobredo, manuelQuezon, ramonMagsaysay, fidelRamos, coryAquino),
+                new Ballot().voteInOrder(leniRobredo, coryAquino, manuelQuezon, ramonMagsaysay, fidelRamos),
+                new Ballot().voteInOrder(leniRobredo, coryAquino, fidelRamos, manuelQuezon, ramonMagsaysay),
+                new Ballot().voteInOrder(ramonMagsaysay, manuelQuezon, fidelRamos, coryAquino, leniRobredo),
+                new Ballot().voteInOrder(ramonMagsaysay, fidelRamos, manuelQuezon, coryAquino, leniRobredo),
+                new Ballot().voteInOrder(ramonMagsaysay, leniRobredo, manuelQuezon, coryAquino, fidelRamos),
+                new Ballot().voteInOrder(ramonMagsaysay, leniRobredo, manuelQuezon, fidelRamos, coryAquino),
+                new Ballot().voteInOrder(ramonMagsaysay, fidelRamos, manuelQuezon, leniRobredo, coryAquino),
+                new Ballot().voteInOrder(manuelQuezon, ramonMagsaysay, fidelRamos, coryAquino, leniRobredo),
+                new Ballot().voteInOrder(manuelQuezon, ramonMagsaysay, fidelRamos, leniRobredo, coryAquino),
+                new Ballot().voteInOrder(manuelQuezon, leniRobredo, ramonMagsaysay, coryAquino, fidelRamos),
+                new Ballot().voteInOrder(manuelQuezon, leniRobredo, ramonMagsaysay, fidelRamos, coryAquino),
+                new Ballot().voteInOrder(coryAquino, leniRobredo, manuelQuezon, fidelRamos, ramonMagsaysay),
+                new Ballot().voteInOrder(coryAquino, leniRobredo, manuelQuezon, ramonMagsaysay, fidelRamos),
+                new Ballot().voteInOrder(coryAquino, leniRobredo, ramonMagsaysay, manuelQuezon, fidelRamos),
+                new Ballot().voteInOrder(fidelRamos, coryAquino, leniRobredo, manuelQuezon, ramonMagsaysay),
+                new Ballot().voteInOrder(fidelRamos, ramonMagsaysay, manuelQuezon, coryAquino, leniRobredo)
+        ));
     }
 
     private List<Ballot> ballotListWithFirstRoundWin() {

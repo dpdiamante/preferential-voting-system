@@ -7,12 +7,9 @@ import dpd.lab.voting.model.CandidateEliminationQueue;
 import dpd.lab.voting.model.ElectionResult;
 import dpd.lab.voting.model.ElectionRounds;
 import dpd.lab.voting.model.Preference;
-import dpd.lab.voting.model.PriorityPreference;
 import dpd.lab.voting.model.Votes;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,9 +43,6 @@ public class PreferentialElectionProcessor {
             }
 
             eliminationQueue.update(electionResult.getCandidateVotes());
-            /*electionResult.getLowestVotes().stream()
-                    .filter(losingCandidate -> !losersQueue.contains(losingCandidate))
-                    .forEach(losersQueue::add);*/
         }
 
         return electionResult;

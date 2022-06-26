@@ -90,6 +90,7 @@ public class ElectionResult {
     public List<CandidateVotes> getCandidateVotes() {
         return votePortions.entrySet().stream()
                 .map(entry -> new CandidateVotes(entry.getKey(), entry.getValue()))
+                .filter(candidateVotes -> candidateVotes.getVotes().getValue() > 0)
                 .collect(Collectors.toList());
     }
 
