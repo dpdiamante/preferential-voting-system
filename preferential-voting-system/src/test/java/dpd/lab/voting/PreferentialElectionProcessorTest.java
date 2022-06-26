@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import dpd.lab.voting.model.Ballot;
 import dpd.lab.voting.model.Candidate;
 import dpd.lab.voting.model.ElectionResult;
+import dpd.lab.voting.model.ElectionRounds;
 import dpd.lab.voting.model.Votes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,15 +73,9 @@ public class PreferentialElectionProcessorTest {
         vincent = new Candidate("Vincent");
         hutchMansell = new Candidate("Hutch Mansell");
         assassinCandidates = new HashSet<>(Arrays.asList(
-            johnWick, jackReacher, johnMcClane, vincent
+            johnWick, jackReacher, johnMcClane, vincent, hutchMansell
         ));
 
-        /*private static Candidate leniRobredo;
-        private static Candidate ramonMagsaysay;
-        private static Candidate manuelQuezon;
-        private static Candidate coryAquino;
-        private static Candidate fidelRamos;
-        private static List<Candidate> philippinePresidentialCandidates;*/
         leniRobredo = new Candidate("Leni Robredo");
         ramonMagsaysay = new Candidate("Ramon Magsaysay");
         manuelQuezon = new Candidate("Manuel Quezon");
@@ -100,7 +95,9 @@ public class PreferentialElectionProcessorTest {
     public void shouldHaveCorrectNumberOfTotalVotesAndWinner() {
         ElectionResult result = electionProcessor.processBallots(ballotListWithFirstRoundWin(), batmanCandidates);
 
-        assertThat(result).hasTotalVotes(Votes.valueOf(9)).winnerIs(christianBale);
+        assertThat(result).hasTotalVotes(Votes.valueOf(9))
+                .winnerIs(christianBale)
+                .withElectionRounds(ElectionRounds.valueOf(1));
         System.out.println(new Gson().toJson(result));
     }
 
@@ -111,6 +108,16 @@ public class PreferentialElectionProcessorTest {
         ElectionResult result = electionProcessor.processBallots(ballots, batmanCandidates);
 
         assertThat(result).hasTotalVotes(Votes.valueOf(8));
+        System.out.println(new Gson().toJson(result));
+    }
+
+    @Test
+    public void shouldHaveWinnerInSecondRound() {
+        ElectionResult result = electionProcessor.processBallots(ballotListWithSecondRoundWin(), assassinCandidates);
+
+        assertThat(result).hasTotalVotes(Votes.valueOf(9))
+                .winnerIs(johnWick)
+                .withElectionRounds(ElectionRounds.valueOf(2));
         System.out.println(new Gson().toJson(result));
     }
 

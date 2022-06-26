@@ -2,6 +2,7 @@ package dpd.lab.voting.model.assertions;
 
 import dpd.lab.voting.model.Candidate;
 import dpd.lab.voting.model.ElectionResult;
+import dpd.lab.voting.model.ElectionRounds;
 import dpd.lab.voting.model.Votes;
 import org.assertj.core.api.AbstractAssert;
 
@@ -25,6 +26,12 @@ public class ElectionResultAssert extends AbstractAssert<ElectionResultAssert, E
 
     public ElectionResultAssert hasLosers(Candidate... candidates) {
         assertThat(actual.getLowestVotes()).isEqualTo(new HashSet<>(Arrays.asList(candidates)));
+
+        return myself;
+    }
+
+    public ElectionResultAssert withElectionRounds(ElectionRounds electionRounds) {
+        assertThat(actual.getElectionRounds()).isEqualTo(electionRounds);
 
         return myself;
     }

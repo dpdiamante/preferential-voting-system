@@ -5,6 +5,7 @@ import dpd.lab.voting.exceptions.VotingException;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -84,6 +85,12 @@ public class ElectionResult {
 
     public Optional<Votes> getVotesFor(Candidate candidate) {
         return Optional.ofNullable(votePortions.get(candidate));
+    }
+
+    public List<CandidateVotes> getCandidateVotes() {
+        return votePortions.entrySet().stream()
+                .map(entry -> new CandidateVotes(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     public static class ElectionResultCandidateRegister {

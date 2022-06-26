@@ -16,6 +16,10 @@ public class CandidateEliminationQueue {
         return sortedCandidateVotesList.remove(sortedCandidateVotesList.size() - 1).getCandidate();
     }
 
+    public boolean isEmpty() {
+        return CollectionUtils.isEmpty(sortedCandidateVotesList);
+    }
+
     public void update(List<CandidateVotes> candidateVotes) {
         List<CandidateVotes> sorted = candidateVotes.stream()
                 .sorted(Comparator.reverseOrder()).collect(Collectors.toList());

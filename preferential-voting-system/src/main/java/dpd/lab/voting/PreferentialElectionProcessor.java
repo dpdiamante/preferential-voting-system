@@ -3,6 +3,7 @@ package dpd.lab.voting;
 import dpd.lab.voting.exceptions.VotingException;
 import dpd.lab.voting.model.Ballot;
 import dpd.lab.voting.model.Candidate;
+import dpd.lab.voting.model.CandidateEliminationQueue;
 import dpd.lab.voting.model.ElectionResult;
 import dpd.lab.voting.model.ElectionRounds;
 import dpd.lab.voting.model.Preference;
@@ -20,13 +21,13 @@ public class PreferentialElectionProcessor {
     public ElectionResult processBallots(List<Ballot> ballots, Set<Candidate> candidates) {
         ballots.removeIf(ballot -> invalidBallot(ballot, candidates));
         ElectionResult electionResult = new ElectionResult(Votes.valueOf(ballots.size()));
-        Queue<Candidate> losersQueue = new LinkedList<>();
+        CandidateEliminationQueue eliminationQueue = new CandidateEliminationQueue();
 
         List<Ballot> ballotsToProcess = ballots;
 
         for (int i = 0; i < candidates.size(); i++) {
-            if (!losersQueue.isEmpty()) {
-                Candidate toBeRemoved = losersQueue.element();
+            if (!eliminationQueue.isEmpty()) {
+                Candidate toBeRemoved = eliminationQueue.element();
 
                 ballotsToProcess = ballots.stream()
                     .filter(ballot ->
@@ -34,17 +35,20 @@ public class PreferentialElectionProcessor {
                     ).collect(Collectors.toList());
                 ballotsToProcess.forEach(Ballot::movePriority);
                 electionResult.registerVotesFor(toBeRemoved).with(Votes.valueOf(0));
+                ballots.forEach(ballot -> ballot.remove(toBeRemoved));
             }
 
             runRound(electionResult, ballotsToProcess);
 
             if (electionResult.getWinner().isPresent()) {
+                electionResult.setElectionRounds(ElectionRounds.valueOf(i + 1));
                 break;
             }
 
-            electionResult.getLowestVotes().stream()
+            eliminationQueue.update(electionResult.getCandidateVotes());
+            /*electionResult.getLowestVotes().stream()
                     .filter(losingCandidate -> !losersQueue.contains(losingCandidate))
-                    .forEach(losersQueue::add);
+                    .forEach(losersQueue::add);*/
         }
 
         return electionResult;
